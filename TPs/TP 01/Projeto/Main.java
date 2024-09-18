@@ -55,8 +55,8 @@
  
      public static void main(String[] args) {
         // Escolha do Grafo
-        int tam = 0;
-        String arqName ="grafo" + tam;
+        int tam = 20;
+        String arqName ="Projeto/Grafos/grafo" + tam + ".txt";
         lerArq(arqName);
         
         // Escolha do Algoritmo
@@ -65,6 +65,7 @@
         Tarjan biconexo = new Tarjan(A);
         
         biconexo.chamadaInicial();
+        biconexo.exibirComponentesBiconexos();
      }    
   }
   

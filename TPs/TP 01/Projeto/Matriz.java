@@ -8,8 +8,8 @@
 
     // CONSTRUCTOR
     public Matriz(int N) {
-        this.N = N;
-        this.matriz = new int[N][N]; // Inicializa a matriz com zeros
+        this.N = N+1;
+        this.matriz = new int[this.N][this.N]; // Inicializa a matriz com zeros
     }
 
     // GETTER
@@ -24,7 +24,7 @@
 
     // Adiciona uma aresta entre dois vértices
     public void adicionarAresta(int v, int w) {
-        if (v >= 0 && v < getN() && w >= 0 && w < getN()) {
+        if (v >= 0 && v <= getN() && w >= 0 && w <= getN()) {
             matriz[v][w] = 1;
             matriz[w][v] = 1; // Para grafos não direcionados, a aresta é inclusa duas vezes
         } else {
@@ -34,7 +34,7 @@
 
     // Verifica se há uma aresta entre dois vértices
     public boolean temAresta(int v, int w) {
-        if (v >= 0 && v < getN() && w >= 0 && w < getN()) {
+        if (v >= 0 && v <= getN() && w >= 0 && w <= getN()) {
             return matriz[v][w] == 1;
         } else {
             throw new IllegalArgumentException("Vértice inválido.");
