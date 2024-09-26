@@ -81,9 +81,12 @@
     // Exibe os componentes biconexos encontrados
     public void exibirComponentesBiconexos() {
         for (List<int[]> componente : componentesBiconexos) {
-            MyIO.println("Componente biconexo:");
-            for (int[] aresta : componente) {
-                MyIO.println(Arrays.toString(aresta));
+            // Verifica se o componente contém mais de duas arestas
+            if (componente.size() > 2 && componente.size() < 100) {
+                MyIO.println("Componente biconexo:");
+                for (int[] aresta : componente) {
+                    MyIO.println(Arrays.toString(aresta));
+                }
             }
         }
     }

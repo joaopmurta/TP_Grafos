@@ -55,8 +55,8 @@
  
      public static void main(String[] args) {
         // Escolha do Grafo
-        int tam = 20;
-        String arqName ="Projeto/Grafos/grafo" + tam + ".txt";
+        int tam = 100000;
+        String arqName = "graph" + tam + ".txt";
         lerArq(arqName);
         
         // Escolha do Algoritmo
