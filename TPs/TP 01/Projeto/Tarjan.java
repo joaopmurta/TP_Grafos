@@ -2,6 +2,8 @@
  * Implementação do método proposto por Tarjan para determinar os compontentes biconexos de um grafo não direcionado G
  */
 
+ import java.io.FileWriter;
+ import java.io.IOException;
  import java.util.ArrayList;
  import java.util.Arrays;
  import java.util.List;
@@ -14,7 +16,7 @@
      private boolean[] marcado; // Vetor para marcar vértices visitados
      private int i; // Contador para o número de descoberta
      private Stack<int[]> pilha; // Pilha de arestas
-     private List<List<int[]>> componentesBiconexos = new ArrayList<>(); // Armazena os componentes biconexos
+     private List<List<int[]>> componentesBiconexos; // Armazena os componentes biconexos
  
      public Tarjan(Matriz grafo) {
          this.grafo = grafo;
@@ -25,7 +27,7 @@
          lowpt = new int[N+1];
          marcado = new boolean[N+1];
          pilha = new Stack<>();
- 
+         componentesBiconexos = new ArrayList<>();
          // Inicializa os arrays com valores padrão
          for (int v = 0; v < N; v++) {
              TD[v] = 0; // Vértice não foi numerado ainda
@@ -33,6 +35,7 @@
              marcado[v] = false;
          }
      }
+     
     // Executa o algoritmo de Tarjan para encontrar componentes biconexos
     public void chamadaInicial() {
         for (int v = 0; v < grafo.getN(); v++) {
@@ -48,7 +51,7 @@
         marcado[v] = true; // Marca V
 
         // Percorre todos os vértices adjacentes a v
-        for (int w = 1; w < grafo.getN(); w++) {
+        for (int w = 0; w < grafo.getN(); w++) {
             // Verifica se há aresta {v, w} no grafo
             if (grafo.temAresta(v, w)) {
                 if (TD[w] == 0) { // Se w ainda não foi numerado
@@ -78,17 +81,31 @@
         }
     }
 
-    // Exibe os componentes biconexos encontrados
-    public void exibirComponentesBiconexos() {
-        for (List<int[]> componente : componentesBiconexos) {
-            // Verifica se o componente contém mais de duas arestas
-            if (componente.size() > 2 && componente.size() < 100) {
-                MyIO.println("Componente biconexo:");
-                for (int[] aresta : componente) {
-                    MyIO.println(Arrays.toString(aresta));
+    public void escreveComponentesBiconexos() {
+        try {
+            // Obtém o número de vértices do grafo
+            int numVertices = grafo.getN() - 1;
+            // Cria o nome do arquivo dinamicamente usando o número de vértices
+            String nomeArquivo = "Tarjan_" + numVertices + ".txt";
+            
+            // Cria ou sobrescreve o arquivo com o nome gerado
+            FileWriter writer = new FileWriter(nomeArquivo);
+            writer.write("Componentes biconexos:\n");
+            for (List<int[]> componente : componentesBiconexos) {
+                // Verifica se o componente contém mais de duas arestas e menos de 100
+                if (componente.size() > 2 && componente.size() < 100) {
+                    for (int[] aresta : componente) {
+                        writer.write(Arrays.toString(aresta) + "\n");
+                    }
+                    writer.write("\n");  // Adiciona uma linha em branco para separar os componentes
                 }
             }
+            
+            // Fecha o writer para garantir que todos os dados sejam gravados no arquivo
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-    }
+    }    
  }
  

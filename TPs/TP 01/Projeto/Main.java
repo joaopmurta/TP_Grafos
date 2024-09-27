@@ -55,17 +55,17 @@
  
      public static void main(String[] args) {
         // Escolha do Grafo
-        int tam = 100000;
+        int tam = 100;
         String arqName = "graph" + tam + ".txt";
         lerArq(arqName);
         
         // Escolha do Algoritmo
-        //Cycle biconexo = new Cycle();
+        Cycle biconexo = new Cycle(A);
         //Articulation biconexo = new Articulation(A);
-        Tarjan biconexo = new Tarjan(A);
+        //Tarjan biconexo = new Tarjan(A);
         
         biconexo.chamadaInicial();
-        biconexo.exibirComponentesBiconexos();
+        biconexo.escreveComponentesBiconexos();
      }    
   }
   

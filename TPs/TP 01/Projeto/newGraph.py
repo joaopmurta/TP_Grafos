@@ -1,48 +1,67 @@
 import networkx as nx
 import random
 
-# Número de vértices
-V = 100000
+def generate_component(size):
+    G = nx.cycle_graph(size)  # Cria um ciclo simples com 'size' vértices
+    return G
 
-# Cria um grafo vazio
-G = nx.Graph()
+def connect_components(G, components):
+    for i in range(len(components) - 1):
+        # Seleciona um nó aleatório do componente atual (C1)
+        node_from_component1 = random.choice(list(components[i].nodes()))
+        # Seleciona um nó aleatório do próximo componente (C2)
+        node_from_component2 = random.choice(list(components[i + 1].nodes()))
+        # Adiciona uma aresta entre os dois componentes, criando uma ponte
+        G.add_edge(node_from_component1, node_from_component2)
+    return G
 
-# Adiciona V vértices ao grafo
-G.add_nodes_from(range(V))
-
-# Número de componentes biconexos desejados
-num_biconnected_components = 20
-
-# Gera componentes biconexos pequenos sem adicionar novos vértices
-for _ in range(num_biconnected_components):
-    # Seleciona um tamanho aleatório para o componente biconexo entre 3 e 6
-    size = random.randint(3, 6)
+def generate_graph(V, num_components):
+    G = nx.Graph()
     
-    # Seleciona vértices disponíveis para formar o componente biconexo
-    available_nodes = [node for node in G.nodes() if G.degree[node] < 3]
-    if len(available_nodes) >= size:
-        # Escolhe vértices que ainda não estão em componentes biconexos
-        cycle_nodes = random.sample(available_nodes, size)
-        
-        # Cria um ciclo fechado para formar o componente biconexo
-        for i in range(size):
-            G.add_edge(cycle_nodes[i], cycle_nodes[(i + 1) % size])
-        
-        # Conecta o componente biconexo ao grafo original usando apenas um vértice
-        anchor_node = random.choice(cycle_nodes)
-        other_node = random.choice([node for node in G.nodes() if node not in cycle_nodes])
-        G.add_edge(anchor_node, other_node)
+    # Calcula o tamanho médio dos componentes
+    avg_component_size = V // num_components
+    components = []
+    start_node = 0
 
-# Adiciona mais arestas aleatórias para aumentar a densidade do grafo
-num_additional_edges = random.randint(10000, 50000)
-while len(G.edges()) < num_additional_edges:
-    u = random.randint(0, V - 1)
-    v = random.randint(0, V - 1)
-    if u != v and not G.has_edge(u, v):  # Evita auto-conexões e arestas duplicadas
-        G.add_edge(u, v)
+    for _ in range(num_components):
+        # Determina o tamanho do componente atual, ajustando para não exceder o número total de vértices
+        size = random.randint(max(3, avg_component_size - 2), avg_component_size + 2)
+        if start_node + size > V:  # Ajusta o tamanho se ultrapassar o limite de vértices
+            size = V - start_node
+        # Gera um componente com um ciclo simples
+        component = generate_component(size)
+        
+        # Reposiciona os nós do componente para um range adequado
+        mapping = {node: node + start_node for node in component.nodes()}
+        component = nx.relabel_nodes(component, mapping)
+        
+        # Adiciona o componente ao grafo total
+        G = nx.compose(G, component)
+        components.append(component)
+        
+        # Atualiza o ponto de partida para o próximo componente
+        start_node += size
 
-# Escreve o grafo no arquivo
+        # Verifica se todos os nós foram utilizados
+        if start_node >= V:
+            break
+    
+    # Conecta todos os componentes com pontes
+    G = connect_components(G, components)
+    
+    return G
+
+# Parâmetros
+V = 100000  # Número total de vértices
+num_components = 1000  # Número de componentes biconexos
+
+# Gera o grafo
+G = generate_graph(V, num_components)
+
+# Escreve o grafo em um arquivo com cabeçalho |V| |E|
 with open('graph' + str(V) + '.txt', 'w') as f:
-    f.write(f"{V}  {len(G.edges())}\n")  
+    f.write(f"{V}  {G.number_of_edges()}\n")
+    
+    # Escreve a lista de arestas com espaçamento adequado
     for edge in G.edges():
         f.write(f"       {edge[0]}      {edge[1]}\n")
