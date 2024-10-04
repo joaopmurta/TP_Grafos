@@ -6,7 +6,8 @@
  import java.io.BufferedReader;
  import java.io.FileNotFoundException;
  import java.io.FileReader;
- import java.io.IOException;
+import java.io.FileWriter;
+import java.io.IOException;
   
   public class Main {
       public static Matriz A;
@@ -52,20 +53,49 @@
              }
          }
      }    
+
+    public static void escreveTempoExecucao(double duracaoSegundos, int tamanhoGrafo, String nomeMetodo) {
+        try {
+            // Abre o arquivo em modo de append (não sobrescreve o conteúdo existente)
+            FileWriter writer = new FileWriter("performance_test.txt", true); 
+
+            // Escreve as informações no arquivo
+            writer.write(" " + nomeMetodo + " " + tamanhoGrafo + " " + String.format("%.5f segundos\n", duracaoSegundos));
+            
+            writer.close(); // Fecha o arquivo
+        } catch (IOException e) {
+            e.printStackTrace(); // Mostra erro caso ocorra problema na escrita do arquivo
+        }
+    }
+
  
-     public static void main(String[] args) {
+    public static void main(String[] args) {
         // Escolha do Grafo
-        int tam = 100;
+        int tam = 10000;
         String arqName = "graph" + tam + ".txt";
         lerArq(arqName);
-        
+    
         // Escolha do Algoritmo
         Cycle biconexo = new Cycle(A);
         //Articulation biconexo = new Articulation(A);
         //Tarjan biconexo = new Tarjan(A);
+
+        String nomeMetodo = biconexo.getClass().getSimpleName();
+
+        // Medindo o tempo de execução de chamadaInicial()
+        long inicio = System.nanoTime(); // Início da contagem
+    
+        biconexo.chamadaInicial(); 
+    
+        long fim = System.nanoTime(); // Fim da contagem
         
-        biconexo.chamadaInicial();
+        // Calcula o tempo em segundos
+        double duracaoSegundos = (fim - inicio) / 1_000_000_000.0;
+    
+        // Chama a função para escrever o tempo no arquivo
+        escreveTempoExecucao(duracaoSegundos, tam, nomeMetodo);
+    
         biconexo.escreveComponentesBiconexos();
-     }    
+    }
   }
   
