@@ -3,9 +3,9 @@
  * João Pedro de Melo Murta e Danilo Paris
  */
 
- import java.io.BufferedReader;
- import java.io.FileNotFoundException;
- import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
   
@@ -76,8 +76,8 @@ import java.io.IOException;
         lerArq(arqName);
     
         // Escolha do Algoritmo
-        Cycle biconexo = new Cycle(A);
-        //Articulation biconexo = new Articulation(A);
+        //Cycle biconexo = new Cycle(A);
+        Articulation biconexo = new Articulation(A);
         //Tarjan biconexo = new Tarjan(A);
 
         String nomeMetodo = biconexo.getClass().getSimpleName();

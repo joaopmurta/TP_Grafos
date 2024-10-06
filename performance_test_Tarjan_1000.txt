@@ -1,0 +1,1 @@
+ Tarjan 1000 0,06908 segundos
