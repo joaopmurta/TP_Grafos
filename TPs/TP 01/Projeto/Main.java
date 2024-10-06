@@ -71,14 +71,14 @@ import java.io.IOException;
  
     public static void main(String[] args) {
         // Escolha do Grafo
-        int tam = 10000;
+        int tam = 100;
         String arqName = "graph" + tam + ".txt";
         lerArq(arqName);
     
         // Escolha do Algoritmo
         //Cycle biconexo = new Cycle(A);
-        Articulation biconexo = new Articulation(A);
-        //Tarjan biconexo = new Tarjan(A);
+        //Articulation biconexo = new Articulation(A);
+        Tarjan biconexo = new Tarjan(A);
 
         String nomeMetodo = biconexo.getClass().getSimpleName();
 
