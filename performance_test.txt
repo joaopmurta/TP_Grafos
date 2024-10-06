@@ -1,8 +1,0 @@
- Articulation 100 0,01275 segundos
- Articulation 1000 2,82649 segundos
- Articulation 10000 2078,58238 segundos
- Cycle 100 0,00702 segundos
- Cycle 1000 0,16133 segundos
- Tarjan 1000 0,03407 segundos
- Tarjan 100 0,00084 segundos
- Tarjan 10000 0,74191 segundos

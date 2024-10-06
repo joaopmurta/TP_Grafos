@@ -70,32 +70,56 @@ import java.io.IOException;
 
  
     public static void main(String[] args) {
-        // Escolha do Grafo
-        int tam = 100;
-        String arqName = "graph" + tam + ".txt";
-        lerArq(arqName);
-    
-        // Escolha do Algoritmo
-        //Cycle biconexo = new Cycle(A);
-        //Articulation biconexo = new Articulation(A);
-        Tarjan biconexo = new Tarjan(A);
-
-        String nomeMetodo = biconexo.getClass().getSimpleName();
-
-        // Medindo o tempo de execução de chamadaInicial()
-        long inicio = System.nanoTime(); // Início da contagem
-    
-        biconexo.chamadaInicial(); 
-    
-        long fim = System.nanoTime(); // Fim da contagem
+        // Array com os nomes das classes a serem testadas
+        String[] nomesClasses = {"Cycle", "Tarjan"};
         
-        // Calcula o tempo em segundos
-        double duracaoSegundos = (fim - inicio) / 1_000_000_000.0;
-    
-        // Chama a função para escrever o tempo no arquivo
-        escreveTempoExecucao(duracaoSegundos, tam, nomeMetodo);
-    
-        biconexo.escreveComponentesBiconexos();
+        // Array com os tamanhos dos grafos
+        int[] tamanhos = {100, 1000, 10000, 100000};
+
+        // Itera sobre cada tamanho de grafo
+        for (int tam : tamanhos) {
+            // Itera sobre cada nome de classe
+            for (String nomeClasse : nomesClasses) {
+                // Cria o nome do arquivo de grafo
+                String arqName = "graph" + tam + ".txt";
+                lerArq(arqName);
+
+                // Instancia o algoritmo de acordo com o nome da classe
+                Object biconexo = null;
+                if (nomeClasse.equals("Cycle")) {
+                    biconexo = new Cycle(A);
+                } else if (nomeClasse.equals("Tarjan")) {
+                    biconexo = new Tarjan(A);
+                }
+
+                if (biconexo != null) {
+                    // Medindo o tempo de execução de chamadaInicial()
+                    long inicio = System.nanoTime(); // Início da contagem
+                    
+                    // Chama o método chamadaInicial()
+                    if (biconexo instanceof Cycle) {
+                        ((Cycle) biconexo).chamadaInicial();
+                    } else if (biconexo instanceof Tarjan) {
+                        ((Tarjan) biconexo).chamadaInicial();
+                    }
+
+                    long fim = System.nanoTime(); // Fim da contagem
+
+                    // Calcula o tempo em segundos
+                    double duracaoSegundos = (fim - inicio) / 1_000_000_000.0;
+
+                    // Chama a função para escrever o tempo no arquivo
+                    escreveTempoExecucao(duracaoSegundos, tam, nomeClasse);
+
+                    // Chama o método para escrever os componentes biconexos
+                    if (biconexo instanceof Cycle) {
+                        ((Cycle) biconexo).escreveComponentesBiconexos();
+                    } else if (biconexo instanceof Tarjan) {
+                        ((Tarjan) biconexo).escreveComponentesBiconexos();
+                    }
+                }
+            }
+        }
     }
   }
   
