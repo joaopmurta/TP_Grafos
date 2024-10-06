@@ -71,7 +71,7 @@ import java.io.IOException;
  
     public static void main(String[] args) {
         // Array com os nomes das classes a serem testadas
-        String[] nomesClasses = {"Cycle", "Tarjan"};
+        String[] nomesClasses = {"Cycle", "Tarjan", "Articulation"};
         
         // Array com os tamanhos dos grafos
         int[] tamanhos = {100, 1000, 10000, 100000};
@@ -90,6 +90,8 @@ import java.io.IOException;
                     biconexo = new Cycle(A);
                 } else if (nomeClasse.equals("Tarjan")) {
                     biconexo = new Tarjan(A);
+                } else if (nomeClasse.equals("Articulation")) {
+                    biconexo = new Articulation(A);
                 }
 
                 if (biconexo != null) {
@@ -101,6 +103,8 @@ import java.io.IOException;
                         ((Cycle) biconexo).chamadaInicial();
                     } else if (biconexo instanceof Tarjan) {
                         ((Tarjan) biconexo).chamadaInicial();
+                    } else if (biconexo instanceof Articulation) {
+                        ((Articulation) biconexo).chamadaInicial();
                     }
 
                     long fim = System.nanoTime(); // Fim da contagem
@@ -116,6 +120,8 @@ import java.io.IOException;
                         ((Cycle) biconexo).escreveComponentesBiconexos();
                     } else if (biconexo instanceof Tarjan) {
                         ((Tarjan) biconexo).escreveComponentesBiconexos();
+                    } else if (biconexo instanceof Articulation) {
+                        ((Articulation) biconexo).escreveComponentesBiconexos();
                     }
                 }
             }
