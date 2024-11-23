@@ -1,0 +1,10 @@
+os grafos são direcionados
+
+a proposta é encontrar para cada p um subconjunto de c consumidores do depósito p de modo que cada c pertence a somente um conjunto cujo custo é minimizado
+
+cada instância tem no cabeçalho N = | V | e M = | E | e P
+em sequência as arestas {i,j} e o custo Cij associado
+
+devem ser implementados um algoritmo exato e um algoritmo aproximado
+
+para cada instância definiremos o raio, que é a maior distância de um vértice para algum dos centros selecionados
